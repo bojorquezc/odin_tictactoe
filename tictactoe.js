@@ -1,3 +1,5 @@
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-use-before-define */
 /* eslint-disable max-len */
 /* eslint-disable no-alert */
 /* eslint-disable no-console */
@@ -16,6 +18,37 @@ const playerFactory = (name, symbol) => {
 const aracely = playerFactory('Aracely', 'X');
 const conrado = playerFactory('Conrado', 'O');
 
+const displayController = (() => {
+  const square0 = document.querySelector('.square-0');
+  const square1 = document.querySelector('.square-1');
+  const square2 = document.querySelector('.square-2');
+  const square3 = document.querySelector('.square-3');
+  const square4 = document.querySelector('.square-4');
+  const square5 = document.querySelector('.square-5');
+  const square6 = document.querySelector('.square-6');
+  const square7 = document.querySelector('.square-7');
+  const square8 = document.querySelector('.square-8');
+  const squareArray = [square0, square1, square2, square3, square4, square5, square6, square7, square8];
+
+  // squareArray.forEach((square) => {
+  //   square.addEventListener('click', () => {
+  //     gameBoardModule.board.forEach(() => {
+  //       if (gameBoardModule.board[squareArray.indexOf(square)] === 'X' || gameBoardModule.board[squareArray.indexOf(square)] === 'O') {
+  //         square.textContent = gameBoardModule.board[squareArray.indexOf(square)];
+  //       }
+  //     });
+  //   });
+  // });
+
+  const displayBoard = () => {
+
+  };
+
+  return {
+    displayBoard, squareArray,
+  };
+})();
+
 const gameBoardModule = (() => {
   let board = ['0', '1', '2', '3', '4', '5', '6', '7', '8'];
 
@@ -23,10 +56,16 @@ const gameBoardModule = (() => {
     const firstPlayer = player1;
     const secondPlayer = player2;
     let turnCount = 0;
-    console.log('Tic Tac Toe game started');
+
+    displayController.squareArray.forEach((square) => {
+      square.addEventListener('click', () => {
+        board[displayController.squareArray.indexOf(square)] = firstPlayer.symbol;
+        square.textContent = board[displayController.squareArray.indexOf(square)];
+      });
+    });
 
     for (let index = 0; index < 5; index += 1) {
-      firstPlayer.currentMove = prompt(`${firstPlayer.name} where would you like to place '${firstPlayer.symbol}'?\n[${board[0]} ${board[1]} ${board[2]}]\n[${board[3]} ${board[4]} ${board[5]}]\n[${board[6]} ${board[7]} ${board[8]}]`);
+      // firstPlayer.currentMove = prompt(`${firstPlayer.name} where would you like to place '${firstPlayer.symbol}'?\n[${board[0]} ${board[1]} ${board[2]}]\n[${board[3]} ${board[4]} ${board[5]}]\n[${board[6]} ${board[7]} ${board[8]}]`);
 
       while (
         Number(firstPlayer.currentMove) > 9
@@ -120,30 +159,3 @@ const gameBoardModule = (() => {
     board, playRound,
   };
 })();
-
-const displayController = (() => {
-  const square0 = document.querySelector('.square-0');
-  const square1 = document.querySelector('.square-1');
-  const square2 = document.querySelector('.square-2');
-  const square3 = document.querySelector('.square-3');
-  const square4 = document.querySelector('.square-4');
-  const square5 = document.querySelector('.square-5');
-  const square6 = document.querySelector('.square-6');
-  const square7 = document.querySelector('.square-7');
-  const square8 = document.querySelector('.square-8');
-
-  const displayBoard = () => {
-    // if (gameBoardModule.board[0] != '0') {
-    //   square0.textContent = gameBoardModule.board[0];
-    // }
-    for (item of gameBoardModule.board) {
-      
-    }
-  }
-
-  return {
-    displayBoard,
-  };
-})();
-
-

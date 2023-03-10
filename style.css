@@ -148,8 +148,13 @@ label {
 
 .gamesquare {
 	background-color: #baa7cb;
+	font-size: 90px;
 	height: 125px;
 	width: 125px;
+    align-items: center;
+    display: flex;
+    font-weight: 600;
+    justify-content: center;
 }
 
 footer {

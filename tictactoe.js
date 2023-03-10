@@ -47,6 +47,7 @@ const gameBoardModule = (() => {
       if (board[firstPlayer.currentMove] !== 'X' || board[firstPlayer.currentMove] !== 'O') {
         board.splice(firstPlayer.currentMove, 1, firstPlayer.symbol);
         console.log(board);
+        displayController.displayBoard();
         if (
           (board[0] === 'X' && board[1] === 'X' && board[2] === 'X')
           || (board[3] === 'X' && board[4] === 'X' && board[5] === 'X')
@@ -90,6 +91,7 @@ const gameBoardModule = (() => {
       if (board[secondPlayer.currentMove] !== 'X' || board[secondPlayer.currentMove] !== 'O') {
         board.splice(secondPlayer.currentMove, 1, secondPlayer.symbol);
         console.log(board);
+        displayController.displayBoard();
         if (
           (board[0] === 'X' && board[1] === 'X' && board[2] === 'X')
           || (board[3] === 'X' && board[4] === 'X' && board[5] === 'X')
@@ -118,3 +120,30 @@ const gameBoardModule = (() => {
     board, playRound,
   };
 })();
+
+const displayController = (() => {
+  const square0 = document.querySelector('.square-0');
+  const square1 = document.querySelector('.square-1');
+  const square2 = document.querySelector('.square-2');
+  const square3 = document.querySelector('.square-3');
+  const square4 = document.querySelector('.square-4');
+  const square5 = document.querySelector('.square-5');
+  const square6 = document.querySelector('.square-6');
+  const square7 = document.querySelector('.square-7');
+  const square8 = document.querySelector('.square-8');
+
+  const displayBoard = () => {
+    // if (gameBoardModule.board[0] != '0') {
+    //   square0.textContent = gameBoardModule.board[0];
+    // }
+    for (item of gameBoardModule.board) {
+      
+    }
+  }
+
+  return {
+    displayBoard,
+  };
+})();
+
+

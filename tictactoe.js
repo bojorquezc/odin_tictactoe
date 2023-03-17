@@ -30,6 +30,14 @@ const displayController = (() => {
   const square8 = document.querySelector('.square-8');
   const squareArray = [square0, square1, square2, square3, square4, square5, square6, square7, square8];
 
+  // const displayBoard = () => {
+  //   squareArray.forEach((square) => {
+  //     if (square.textContent !== 'X' || square.textContent !== 'O') {
+  //       square.textContent = gameBoardModule.board[squareArray.indexOf(square)];
+  //     }
+  //   });
+  // };
+
   const displayBoard = () => {
     squareArray.forEach((square) => {
       if (square.textContent !== 'X' || square.textContent !== 'O') {
@@ -38,8 +46,14 @@ const displayController = (() => {
     });
   };
 
+  const resetBoard = () => {
+    squareArray.forEach((square) => {
+      square.textContent = '';
+    });
+  };
+
   return {
-    squareArray, displayBoard,
+    squareArray, displayBoard, resetBoard,
   };
 })();
 
@@ -50,6 +64,37 @@ const gameBoardModule = (() => {
     const firstPlayer = player1;
     const secondPlayer = player2;
     let turnCount = 0;
+    displayController.resetBoard();
+
+    displayController.squareArray.forEach((square) => {
+      square.addEventListener('click', () => {
+        if (currentTurn === firstPlayer) {
+          board[displayController.squareArray.indexOf(square)] = firstPlayer.symbol;
+          firstPlayer.currentMove = board[displayController.squareArray.indexOf(square)];
+          displayController.displayBoard();
+          gameProgress();
+          winningCondition();
+          currentTurn = secondPlayer;
+        } else if (currentTurn === secondPlayer) {
+          board[displayController.squareArray.indexOf(square)] = secondPlayer.symbol;
+          secondPlayer.currentMove = board[displayController.squareArray.indexOf(square)];
+          displayController.displayBoard();
+          gameProgress();
+          winningCondition();
+          currentTurn = firstPlayer;
+        }
+      });
+    });
+
+    const gameProgress = () => {
+      turnCount += 1;
+      console.log(turnCount);
+      if (turnCount === 10) {
+        console.log('The game is tied');
+        turnCount = 0;
+        board = ['', '', '', '', '', '', '', '', ''];
+      }
+    };
 
     const winningCondition = () => {
       let gameWinner = '';
@@ -65,6 +110,7 @@ const gameBoardModule = (() => {
       ) {
         gameWinner = `${firstPlayer.name} wins the game`;
         console.log(gameWinner);
+        turnCount = 0;
         board = ['', '', '', '', '', '', '', '', ''];
       } else if (
         (board[0] === 'O' && board[1] === 'O' && board[2] === 'O')
@@ -78,64 +124,58 @@ const gameBoardModule = (() => {
       ) {
         gameWinner = `${secondPlayer.name} wins the game`;
         console.log(gameWinner);
-        board = ['', '', '', '', '', '', '', '', ''];
-      }
-
-      turnCount += 1;
-      console.log(turnCount);
-      if (turnCount === 9) {
-        console.log('The game is tied');
+        turnCount = 0;
         board = ['', '', '', '', '', '', '', '', ''];
       }
     };
 
-    const boardClickFirstPlayer = () => {
-      displayController.squareArray.forEach((square) => {
-        square.addEventListener('click', () => {
-          // if (board[displayController.squareArray.indexOf(square)] === 'X'
-          // || board[displayController.squareArray.indexOf(square)] === 'O') {
-          //   console.log('Spot already taken, choose another spot');
-          // }
-          board[displayController.squareArray.indexOf(square)] = firstPlayer.symbol;
-          firstPlayer.currentMove = board[displayController.squareArray.indexOf(square)];
-          displayController.displayBoard();
-          winningCondition();
-          currentTurn = secondPlayer;
-          gameFlow();
-        });
-      });
-    };
+    // const boardClickFirstPlayer = () => {
+    //   displayController.squareArray.forEach((square) => {
+    //     square.addEventListener('click', () => {
+    //       // if (board[displayController.squareArray.indexOf(square)] === 'X'
+    //       // || board[displayController.squareArray.indexOf(square)] === 'O') {
+    //       //   console.log('Spot already taken, choose another spot');
+    //       // }
+    //       board[displayController.squareArray.indexOf(square)] = firstPlayer.symbol;
+    //       firstPlayer.currentMove = board[displayController.squareArray.indexOf(square)];
+    //       displayController.displayBoard();
+    //       winningCondition();
+    //       currentTurn = secondPlayer;
+    //       gameFlow();
+    //     });
+    //   });
+    // };
 
-    const boardClickSecondPlayer = () => {
-      displayController.squareArray.forEach((square) => {
-        square.addEventListener('click', () => {
-          // if (board[displayController.squareArray.indexOf(square)] === 'X'
-          // || board[displayController.squareArray.indexOf(square)] === 'O') {
-          //   console.log('Spot already taken, choose another spot');
-          // }
-          board[displayController.squareArray.indexOf(square)] = secondPlayer.symbol;
-          secondPlayer.currentMove = board[displayController.squareArray.indexOf(square)];
-          displayController.displayBoard();
-          winningCondition();
-          currentTurn = firstPlayer;
-          gameFlow();
-        });
-      });
-    };
+    // const boardClickSecondPlayer = () => {
+    //   displayController.squareArray.forEach((square) => {
+    //     square.addEventListener('click', () => {
+    //       // if (board[displayController.squareArray.indexOf(square)] === 'X'
+    //       // || board[displayController.squareArray.indexOf(square)] === 'O') {
+    //       //   console.log('Spot already taken, choose another spot');
+    //       // }
+    //       board[displayController.squareArray.indexOf(square)] = secondPlayer.symbol;
+    //       secondPlayer.currentMove = board[displayController.squareArray.indexOf(square)];
+    //       displayController.displayBoard();
+    //       winningCondition();
+    //       currentTurn = firstPlayer;
+    //       gameFlow();
+    //     });
+    //   });
+    // };
 
     let currentTurn = firstPlayer;
 
-    const gameFlow = () => {
-      if (currentTurn === firstPlayer) {
-        boardClickFirstPlayer();
-        // winningCondition();
-      } else if (currentTurn === secondPlayer) {
-        boardClickSecondPlayer();
-        // winningCondition();
-      }
-    };
+    // const gameFlow = () => {
+    //   if (currentTurn === firstPlayer) {
+    //     boardClickFirstPlayer();
+    //     // winningCondition();
+    //   } else if (currentTurn === secondPlayer) {
+    //     boardClickSecondPlayer();
+    //     // winningCondition();
+    //   }
+    // };
 
-    gameFlow();
+    // gameFlow();
 
     return {
       firstPlayer, secondPlayer,

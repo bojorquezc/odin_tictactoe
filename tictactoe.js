@@ -6,13 +6,13 @@
 /* eslint-disable no-alert */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
+
 const playerFactory = (name, symbol) => {
   const wins = 0;
   const losses = 0;
   const draws = 0;
-  const currentMove = '';
   return {
-    name, symbol, wins, losses, draws, currentMove,
+    name, symbol, wins, losses, draws,
   };
 };
 
@@ -21,23 +21,26 @@ const aracely = playerFactory('Aracely', 'X');
 const conrado = playerFactory('Conrado', 'O');
 
 const displayController = (() => {
-  const gameBoard = document.querySelector('.gameboard');
+  const gameBoardCont = document.querySelector('.gameboard-cont');
+  const gameBoardArray = [];
+  const gameInitialized = false;
 
   const createSquares = () => {
+    const gameBoard = document.createElement('div');
+    gameBoard.classList.add('gameboard');
+    gameBoardCont.appendChild(gameBoard);
     for (let index = 0; index < 9; index += 1) {
       const gameSquare = document.createElement('div');
       gameSquare.classList.add('gamesquare');
       gameSquare.dataset.square = index;
       gameBoard.appendChild(gameSquare);
+      if (gameInitialized === false) {
+        gameBoardArray.push(gameSquare);
+      }
     }
   };
 
-  const gameBoardChildren = gameBoard.children;
-  const gameBoardArray = Array.from(gameBoardChildren);
-
   const displayBoard = () => {
-    console.log(gameBoardChildren);
-    console.log(gameBoardArray);
     gameBoardArray.forEach((element) => {
       if (element.textContent === '') {
         element.textContent = gameBoardModule.board[element.dataset.square];
@@ -45,26 +48,38 @@ const displayController = (() => {
     });
   };
 
-  const boardDisplayReset = () => {
-    gameBoardArray.forEach((element) => {
-      if (element.textContent !== '') {
-        element.textContent = '';
-      }
-    });
-  };
-
   return {
-    gameBoard, createSquares, displayBoard, boardDisplayReset,
+    gameBoardCont, gameBoardArray, gameInitialized, createSquares, displayBoard,
   };
 })();
 
 const gameBoardModule = (() => {
-  let board = ['', '', '', '', '', '', '', '', ''];
+  let turnCount = 0;
+  const board = ['', '', '', '', '', '', '', '', ''];
+
+  // Reset the board array
+  const boardArrayReset = () => {
+    for (const item in gameBoardModule.board) {
+      if (gameBoardModule.board[item] !== '') {
+        gameBoardModule.board[item] = '';
+      }
+    }
+    displayController.gameBoardArray.length = 0;
+  };
+
+  const gameFlow = () => {
+    turnCount += 1;
+    if (turnCount === 9) {
+      console.log('The game is tied');
+      turnCount = 0;
+      boardArrayReset();
+      displayController.gameBoardCont.replaceChildren();
+    }
+  };
 
   const playRound = (player1, player2) => {
     const firstPlayer = player1;
     const secondPlayer = player2;
-    let turnCount = 0;
     let currentTurn = firstPlayer;
 
     const logEvents = () => {
@@ -72,40 +87,18 @@ const gameBoardModule = (() => {
       console.log(`Turn count: ${turnCount}`);
     };
 
-    // Reset the board array
-    const boardArrayReset = () => {
-      for (const item in gameBoardModule.board) {
-        if (gameBoardModule.board[item] !== '') {
-          gameBoardModule.board[item] = '';
-        }
-      }
-    };
-
-    const gameFlow = () => {
-      turnCount += 1;
-      let isPlaying = true;
-      if (turnCount === 9) {
-        console.log('The game is tied');
-        isPlaying = false;
-        turnCount = 0;
-        boardArrayReset();
-        displayController.boardDisplayReset();
-      }
-    };
-
-    const addBoardClickEvents = () => {
-      displayController.gameBoard.addEventListener('click', (e) => {
-        if (currentTurn === firstPlayer) {
+    const boardClickEvents = () => {
+      const gameBoard = document.querySelector('.gameboard');
+      gameBoard.addEventListener('click', (e) => {
+        if (currentTurn === firstPlayer && board[e.target.dataset.square] === '') {
           board[e.target.dataset.square] = firstPlayer.symbol;
-          firstPlayer.currentMove = e.target.dataset.square;
           displayController.displayBoard();
           gameFlow();
           winningCondition();
           logEvents();
           currentTurn = secondPlayer;
-        } else if (currentTurn === secondPlayer) {
+        } else if (currentTurn === secondPlayer && board[e.target.dataset.square] === '') {
           board[e.target.dataset.square] = secondPlayer.symbol;
-          secondPlayer.currentMove = e.target.dataset.square;
           displayController.displayBoard();
           gameFlow();
           winningCondition();
@@ -116,7 +109,8 @@ const gameBoardModule = (() => {
     };
 
     displayController.createSquares();
-    addBoardClickEvents();
+    boardClickEvents();
+    displayController.gameInitialized = true;
 
     const winningCondition = () => {
       let gameWinner = '';
@@ -134,7 +128,7 @@ const gameBoardModule = (() => {
         console.log(gameWinner);
         turnCount = 0;
         boardArrayReset();
-        displayController.boardDisplayReset();
+        displayController.gameBoardCont.replaceChildren();
       } else if (
         (board[0] === 'O' && board[1] === 'O' && board[2] === 'O')
         || (board[3] === 'O' && board[4] === 'O' && board[5] === 'O')
@@ -149,7 +143,7 @@ const gameBoardModule = (() => {
         console.log(gameWinner);
         turnCount = 0;
         boardArrayReset();
-        displayController.boardDisplayReset();
+        displayController.gameBoardCont.replaceChildren();
       }
     };
   };

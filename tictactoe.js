@@ -1,9 +1,6 @@
-/* eslint-disable prefer-arrow-callback */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-use-before-define */
-/* eslint-disable max-len */
-/* eslint-disable no-alert */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 
@@ -12,7 +9,11 @@ const playerFactory = (name, symbol) => {
   const losses = 0;
   const draws = 0;
   return {
-    name, symbol, wins, losses, draws,
+    name,
+    symbol,
+    wins,
+    losses,
+    draws,
   };
 };
 
@@ -23,7 +24,55 @@ const conrado = playerFactory('Conrado', 'O');
 const displayController = (() => {
   const gameBoardCont = document.querySelector('.gameboard-cont');
   const gameBoardArray = [];
+  const playersCont = document.querySelector('.players');
   const gameInitialized = false;
+
+  const createPlayerBoard = () => {
+    // player1 name and symbol display section
+    const player1Section = document.createElement('div');
+    player1Section.classList.add('player-cont');
+    playersCont.appendChild(player1Section);
+
+    const pTagPlayer1 = document.createElement('p');
+    player1Section.appendChild(pTagPlayer1);
+
+    const spanTagPlayer1 = document.createElement('span');
+    spanTagPlayer1.classList.add('bold');
+    pTagPlayer1.appendChild(spanTagPlayer1);
+
+    const spanTagPlayer1Name = document.createElement('span');
+    spanTagPlayer1Name.classList.add('player1-name');
+    pTagPlayer1.appendChild(spanTagPlayer1Name);
+
+    spanTagPlayer1.textContent = 'Player: ';
+
+    const symbolImageX = document.createElement('img');
+    symbolImageX.src = './assets/xmark.svg';
+    player1Section.appendChild(symbolImageX);
+
+    // player2 name and symbol display
+    const player2Section = document.createElement('div');
+    player2Section.classList.add('player-cont');
+    playersCont.appendChild(player2Section);
+
+    const pTagPlayer2 = document.createElement('p');
+    player2Section.appendChild(pTagPlayer2);
+
+    const spanTagPlayer2 = document.createElement('span');
+    spanTagPlayer2.classList.add('bold');
+    pTagPlayer2.appendChild(spanTagPlayer2);
+
+    const spanTagPlayer2Name = document.createElement('span');
+    spanTagPlayer2Name.classList.add('player2-name');
+    pTagPlayer2.appendChild(spanTagPlayer2Name);
+
+    spanTagPlayer2.textContent = 'Player: ';
+
+    const symbolImageO = document.createElement('img');
+    symbolImageO.src = './assets/ellipse.svg';
+    symbolImageO.classList.add('ellipse');
+    player2Section.appendChild(symbolImageO);
+  };
 
   const createSquares = () => {
     const gameBoard = document.createElement('div');
@@ -49,7 +98,13 @@ const displayController = (() => {
   };
 
   return {
-    gameBoardCont, gameBoardArray, gameInitialized, createSquares, displayBoard,
+    gameBoardCont,
+    gameBoardArray,
+    playersCont,
+    gameInitialized,
+    createSquares,
+    createPlayerBoard,
+    displayBoard,
   };
 })();
 
@@ -74,6 +129,7 @@ const gameBoardModule = (() => {
       turnCount = 0;
       boardArrayReset();
       displayController.gameBoardCont.replaceChildren();
+      displayController.playersCont.replaceChildren();
     }
   };
 
@@ -81,6 +137,13 @@ const gameBoardModule = (() => {
     const firstPlayer = player1;
     const secondPlayer = player2;
     let currentTurn = firstPlayer;
+
+    const displayNames = () => {
+      const firstPlayerSpan = document.querySelector('.player1-name');
+      firstPlayerSpan.textContent = firstPlayer.name;
+      const secondPlayerSpan = document.querySelector('.player2-name');
+      secondPlayerSpan.textContent = secondPlayer.name;
+    };
 
     const logEvents = () => {
       console.log(board);
@@ -109,6 +172,8 @@ const gameBoardModule = (() => {
     };
 
     displayController.createSquares();
+    displayController.createPlayerBoard();
+    displayNames();
     boardClickEvents();
     displayController.gameInitialized = true;
 
@@ -129,6 +194,7 @@ const gameBoardModule = (() => {
         turnCount = 0;
         boardArrayReset();
         displayController.gameBoardCont.replaceChildren();
+        displayController.playersCont.replaceChildren();
       } else if (
         (board[0] === 'O' && board[1] === 'O' && board[2] === 'O')
         || (board[3] === 'O' && board[4] === 'O' && board[5] === 'O')
@@ -144,34 +210,13 @@ const gameBoardModule = (() => {
         turnCount = 0;
         boardArrayReset();
         displayController.gameBoardCont.replaceChildren();
+        displayController.playersCont.replaceChildren();
       }
     };
   };
 
   return {
-    board, playRound,
+    board,
+    playRound,
   };
 })();
-
-// if (currentTurn === firstPlayer) {
-//   if (board[displayController.squareArray.indexOf(square)] === 'X'
-//     || board[displayController.squareArray.indexOf(square)] === 'O') {
-//     console.log('Spot already taken, choose another spot');
-//   }
-//   board[displayController.squareArray.indexOf(square)] = firstPlayer.symbol;
-//   firstPlayer.currentMove = board[displayController.squareArray.indexOf(square)];
-//   displayController.displayBoard();
-//   gameFlow();
-//   winningCondition();
-//   currentTurn = secondPlayer;
-// } else if (currentTurn === secondPlayer) {
-//   if (board[displayController.squareArray.indexOf(square)] === 'X'
-//     || board[displayController.squareArray.indexOf(square)] === 'O') {
-//     console.log('Spot already taken, choose another spot');
-//   }
-//   board[displayController.squareArray.indexOf(square)] = secondPlayer.symbol;
-//   secondPlayer.currentMove = board[displayController.squareArray.indexOf(square)];
-//   displayController.displayBoard();
-//   gameFlow();
-//   winningCondition();
-//   currentTurn = firstPlayer;

@@ -3,6 +3,15 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
+const nameInputForm = document.querySelector('.name-input-form');
+const player1name = document.querySelector('#player1-name');
+const player2name = document.querySelector('#player2-name');
+nameInputForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  nameInputForm.style.display = 'none';
+  gameBoardModule.playRound(playerFactory(player1name.value, 'X'), playerFactory(player2name.value, 'O'));
+  // nameInputForm.reset();
+});
 
 const playerFactory = (name, symbol) => {
   const wins = 0;
@@ -90,9 +99,18 @@ const displayController = (() => {
   };
 
   const displayBoard = () => {
+    const xSymbol = document.createElement('img');
+    xSymbol.src = './assets/xmark.svg';
+    const oSymbol = document.createElement('img');
+    oSymbol.src = './assets/ellipse.svg';
     gameBoardArray.forEach((element) => {
       if (element.textContent === '') {
-        element.textContent = gameBoardModule.board[element.dataset.square];
+        // element.textContent = gameBoardModule.board[element.dataset.square];
+        if (gameBoardModule.board[element.dataset.square] === 'X') {
+          element.appendChild(xSymbol);
+        } else if (gameBoardModule.board[element.dataset.square] === 'O') {
+          element.appendChild(oSymbol);
+        }
       }
     });
   };
@@ -136,6 +154,7 @@ const gameBoardModule = (() => {
   const playRound = (player1, player2) => {
     const firstPlayer = player1;
     const secondPlayer = player2;
+    console.log(firstPlayer, secondPlayer);
     let currentTurn = firstPlayer;
 
     const displayNames = () => {

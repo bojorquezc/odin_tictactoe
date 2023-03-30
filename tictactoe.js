@@ -53,6 +53,7 @@ const displayController = (() => {
 
     const symbolImageX = document.createElement('img');
     symbolImageX.src = './assets/xmark.svg';
+    symbolImageX.classList.add('xboard-symbol');
     player1Section.appendChild(symbolImageX);
 
     // player2 name and symbol display
@@ -75,6 +76,7 @@ const displayController = (() => {
 
     const symbolImageO = document.createElement('img');
     symbolImageO.src = './assets/ellipse.svg';
+    symbolImageO.classList.add('oboard-symbol');
     symbolImageO.classList.add('ellipse');
     player2Section.appendChild(symbolImageO);
   };
@@ -97,8 +99,10 @@ const displayController = (() => {
   const displayBoard = () => {
     const xSymbol = document.createElement('img');
     xSymbol.src = './assets/xmark.svg';
+    xSymbol.style.filter = 'invert(48%) sepia(60%) saturate(3359%) hue-rotate(183deg) brightness(104%) contrast(101%)';
     const oSymbol = document.createElement('img');
     oSymbol.src = './assets/ellipse.svg';
+    oSymbol.style.filter = 'invert(48%) sepia(60%) saturate(3359%) hue-rotate(150deg) brightness(104%) contrast(101%)';
     gameBoardArray.forEach((element) => {
       if (element.hasChildNodes() === false) {
         if (gameBoardModule.board[element.dataset.square] === 'X') {
@@ -159,6 +163,19 @@ const gameBoardModule = (() => {
       secondPlayerSpan.textContent = secondPlayer.name;
     };
 
+    const highlightSymbol = () => {
+      const xBoardSymbol = document.querySelector('.xboard-symbol');
+      const oBoardSymbol = document.querySelector('.oboard-symbol');
+
+      if (currentTurn === firstPlayer) {
+        xBoardSymbol.style.filter = 'invert(48%) sepia(60%) saturate(3359%) hue-rotate(183deg) brightness(104%) contrast(101%)';
+        oBoardSymbol.style.filter = '';
+      } else {
+        oBoardSymbol.style.filter = 'invert(48%) sepia(60%) saturate(3359%) hue-rotate(150deg) brightness(104%) contrast(101%)';
+        xBoardSymbol.style.filter = '';
+      }
+    };
+
     const logEvents = () => {
       console.log(board);
       console.log(`Turn count: ${turnCount}`);
@@ -174,6 +191,7 @@ const gameBoardModule = (() => {
           winningCondition();
           logEvents();
           currentTurn = secondPlayer;
+          highlightSymbol();
         } else if (currentTurn === secondPlayer && board[e.target.dataset.square] === '') {
           board[e.target.dataset.square] = secondPlayer.symbol;
           displayController.displayBoard();
@@ -181,6 +199,7 @@ const gameBoardModule = (() => {
           winningCondition();
           logEvents();
           currentTurn = firstPlayer;
+          highlightSymbol();
         }
       });
     };
@@ -188,6 +207,7 @@ const gameBoardModule = (() => {
     displayController.createSquares();
     displayController.createPlayerBoard();
     displayNames();
+    highlightSymbol();
     boardClickEvents();
     displayController.gameInitialized = true;
 
@@ -206,7 +226,7 @@ const gameBoardModule = (() => {
         displayController.gameBoardArray[0].style.backgroundColor = '#6028ba';
         displayController.gameBoardArray[1].style.backgroundColor = '#6028ba';
         displayController.gameBoardArray[2].style.backgroundColor = '#6028ba';
-        winningReset(firstPlayer.name);
+        // winningReset(firstPlayer.name);
       } else if (board[3] === 'X' && board[4] === 'X' && board[5] === 'X') {
         displayController.gameBoardArray[3].style.backgroundColor = '#6028ba';
         displayController.gameBoardArray[4].style.backgroundColor = '#6028ba';

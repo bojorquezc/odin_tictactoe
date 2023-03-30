@@ -200,6 +200,11 @@ label {
     display: flex;
     font-weight: 600;
     justify-content: center;
+	transition: transform .2s; 
+}
+
+.gamesquare:hover {
+	transform: scale(1.05);
 }
 
 footer {

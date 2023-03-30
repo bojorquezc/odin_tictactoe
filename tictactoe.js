@@ -26,10 +26,6 @@ const playerFactory = (name, symbol) => {
   };
 };
 
-// Generated players for testing purposes
-const aracely = playerFactory('Aracely', 'X');
-const conrado = playerFactory('Conrado', 'O');
-
 const displayController = (() => {
   const gameBoardCont = document.querySelector('.gameboard-cont');
   const gameBoardArray = [];
@@ -105,7 +101,6 @@ const displayController = (() => {
     oSymbol.src = './assets/ellipse.svg';
     gameBoardArray.forEach((element) => {
       if (element.hasChildNodes() === false) {
-        // element.textContent = gameBoardModule.board[element.dataset.square];
         if (gameBoardModule.board[element.dataset.square] === 'X') {
           element.appendChild(xSymbol);
         } else if (gameBoardModule.board[element.dataset.square] === 'O') {
@@ -196,40 +191,97 @@ const gameBoardModule = (() => {
     boardClickEvents();
     displayController.gameInitialized = true;
 
-    const winningCondition = () => {
+    const winningReset = (player) => {
       let gameWinner = '';
-      if (
-        (board[0] === 'X' && board[1] === 'X' && board[2] === 'X')
-        || (board[3] === 'X' && board[4] === 'X' && board[5] === 'X')
-        || (board[6] === 'X' && board[7] === 'X' && board[8] === 'X')
-        || (board[0] === 'X' && board[3] === 'X' && board[6] === 'X')
-        || (board[1] === 'X' && board[4] === 'X' && board[7] === 'X')
-        || (board[2] === 'X' && board[5] === 'X' && board[8] === 'X')
-        || (board[0] === 'X' && board[4] === 'X' && board[8] === 'X')
-        || (board[2] === 'X' && board[4] === 'X' && board[6] === 'X')
-      ) {
-        gameWinner = `${firstPlayer.name} wins the game`;
-        console.log(gameWinner);
-        turnCount = 0;
-        boardArrayReset();
-        displayController.gameBoardCont.replaceChildren();
-        displayController.playersCont.replaceChildren();
-      } else if (
-        (board[0] === 'O' && board[1] === 'O' && board[2] === 'O')
-        || (board[3] === 'O' && board[4] === 'O' && board[5] === 'O')
-        || (board[6] === 'O' && board[7] === 'O' && board[8] === 'O')
-        || (board[0] === 'O' && board[3] === 'O' && board[6] === 'O')
-        || (board[1] === 'O' && board[4] === 'O' && board[7] === 'O')
-        || (board[2] === 'O' && board[5] === 'O' && board[8] === 'O')
-        || (board[0] === 'O' && board[4] === 'O' && board[8] === 'O')
-        || (board[2] === 'O' && board[4] === 'O' && board[6] === 'O')
-      ) {
-        gameWinner = `${secondPlayer.name} wins the game`;
-        console.log(gameWinner);
-        turnCount = 0;
-        boardArrayReset();
-        displayController.gameBoardCont.replaceChildren();
-        displayController.playersCont.replaceChildren();
+      gameWinner = `${player} wins the game`;
+      console.log(gameWinner);
+      turnCount = 0;
+      boardArrayReset();
+      displayController.gameBoardCont.replaceChildren();
+      displayController.playersCont.replaceChildren();
+    };
+
+    const winningCondition = () => {
+      if (board[0] === 'X' && board[1] === 'X' && board[2] === 'X') {
+        displayController.gameBoardArray[0].style.backgroundColor = '#6028ba';
+        displayController.gameBoardArray[1].style.backgroundColor = '#6028ba';
+        displayController.gameBoardArray[2].style.backgroundColor = '#6028ba';
+        winningReset(firstPlayer.name);
+      } else if (board[3] === 'X' && board[4] === 'X' && board[5] === 'X') {
+        displayController.gameBoardArray[3].style.backgroundColor = '#6028ba';
+        displayController.gameBoardArray[4].style.backgroundColor = '#6028ba';
+        displayController.gameBoardArray[5].style.backgroundColor = '#6028ba';
+        winningReset(firstPlayer.name);
+      } else if (board[6] === 'X' && board[7] === 'X' && board[8] === 'X') {
+        displayController.gameBoardArray[6].style.backgroundColor = '#6028ba';
+        displayController.gameBoardArray[7].style.backgroundColor = '#6028ba';
+        displayController.gameBoardArray[8].style.backgroundColor = '#6028ba';
+        winningReset(firstPlayer.name);
+      } else if (board[0] === 'X' && board[3] === 'X' && board[6] === 'X') {
+        displayController.gameBoardArray[0].style.backgroundColor = '#6028ba';
+        displayController.gameBoardArray[3].style.backgroundColor = '#6028ba';
+        displayController.gameBoardArray[6].style.backgroundColor = '#6028ba';
+        winningReset(firstPlayer.name);
+      } else if (board[1] === 'X' && board[4] === 'X' && board[7] === 'X') {
+        displayController.gameBoardArray[1].style.backgroundColor = '#6028ba';
+        displayController.gameBoardArray[4].style.backgroundColor = '#6028ba';
+        displayController.gameBoardArray[7].style.backgroundColor = '#6028ba';
+        winningReset(firstPlayer.name);
+      } else if (board[2] === 'X' && board[5] === 'X' && board[8] === 'X') {
+        displayController.gameBoardArray[2].style.backgroundColor = '#6028ba';
+        displayController.gameBoardArray[5].style.backgroundColor = '#6028ba';
+        displayController.gameBoardArray[8].style.backgroundColor = '#6028ba';
+        winningReset(firstPlayer.name);
+      } else if (board[0] === 'X' && board[4] === 'X' && board[8] === 'X') {
+        displayController.gameBoardArray[0].style.backgroundColor = '#6028ba';
+        displayController.gameBoardArray[4].style.backgroundColor = '#6028ba';
+        displayController.gameBoardArray[8].style.backgroundColor = '#6028ba';
+        winningReset(firstPlayer.name);
+      } else if (board[2] === 'X' && board[4] === 'X' && board[6] === 'X') {
+        displayController.gameBoardArray[2].style.backgroundColor = '#6028ba';
+        displayController.gameBoardArray[4].style.backgroundColor = '#6028ba';
+        displayController.gameBoardArray[6].style.backgroundColor = '#6028ba';
+        winningReset(firstPlayer.name);
+      } else if (board[0] === 'O' && board[1] === 'O' && board[2] === 'O') {
+        displayController.gameBoardArray[0].style.backgroundColor = '#6028ba';
+        displayController.gameBoardArray[1].style.backgroundColor = '#6028ba';
+        displayController.gameBoardArray[2].style.backgroundColor = '#6028ba';
+        winningReset(secondPlayer.name);
+      } else if (board[3] === 'O' && board[4] === 'O' && board[5] === 'O') {
+        displayController.gameBoardArray[3].style.backgroundColor = '#6028ba';
+        displayController.gameBoardArray[4].style.backgroundColor = '#6028ba';
+        displayController.gameBoardArray[5].style.backgroundColor = '#6028ba';
+        winningReset(secondPlayer.name);
+      } else if (board[6] === 'O' && board[7] === 'O' && board[8] === 'O') {
+        displayController.gameBoardArray[6].style.backgroundColor = '#6028ba';
+        displayController.gameBoardArray[7].style.backgroundColor = '#6028ba';
+        displayController.gameBoardArray[8].style.backgroundColor = '#6028ba';
+        winningReset(secondPlayer.name);
+      } else if (board[0] === 'O' && board[3] === 'O' && board[6] === 'O') {
+        displayController.gameBoardArray[0].style.backgroundColor = '#6028ba';
+        displayController.gameBoardArray[3].style.backgroundColor = '#6028ba';
+        displayController.gameBoardArray[6].style.backgroundColor = '#6028ba';
+        winningReset(secondPlayer.name);
+      } else if (board[1] === 'O' && board[4] === 'O' && board[7] === 'O') {
+        displayController.gameBoardArray[1].style.backgroundColor = '#6028ba';
+        displayController.gameBoardArray[4].style.backgroundColor = '#6028ba';
+        displayController.gameBoardArray[7].style.backgroundColor = '#6028ba';
+        winningReset(secondPlayer.name);
+      } else if (board[2] === 'O' && board[5] === 'O' && board[8] === 'O') {
+        displayController.gameBoardArray[2].style.backgroundColor = '#6028ba';
+        displayController.gameBoardArray[5].style.backgroundColor = '#6028ba';
+        displayController.gameBoardArray[8].style.backgroundColor = '#6028ba';
+        winningReset(secondPlayer.name);
+      } else if (board[0] === 'O' && board[4] === 'O' && board[8] === 'O') {
+        displayController.gameBoardArray[0].style.backgroundColor = '#6028ba';
+        displayController.gameBoardArray[4].style.backgroundColor = '#6028ba';
+        displayController.gameBoardArray[8].style.backgroundColor = '#6028ba';
+        winningReset(secondPlayer.name);
+      } else if (board[2] === 'O' && board[4] === 'O' && board[6] === 'O') {
+        displayController.gameBoardArray[2].style.backgroundColor = '#6028ba';
+        displayController.gameBoardArray[4].style.backgroundColor = '#6028ba';
+        displayController.gameBoardArray[6].style.backgroundColor = '#6028ba';
+        winningReset(secondPlayer.name);
       }
     };
   };

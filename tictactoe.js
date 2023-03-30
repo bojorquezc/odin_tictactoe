@@ -104,7 +104,7 @@ const displayController = (() => {
     const oSymbol = document.createElement('img');
     oSymbol.src = './assets/ellipse.svg';
     gameBoardArray.forEach((element) => {
-      if (element.textContent === '') {
+      if (element.hasChildNodes() === false) {
         // element.textContent = gameBoardModule.board[element.dataset.square];
         if (gameBoardModule.board[element.dataset.square] === 'X') {
           element.appendChild(xSymbol);

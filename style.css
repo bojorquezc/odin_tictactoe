@@ -104,6 +104,33 @@ label {
 
 }
 
+
+.winner-cont {
+	display: none;
+	justify-content: center;
+	padding-bottom: 20px;
+}
+
+.winner-sub-cont {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+}
+
+.game-winner-placeholder {
+	padding-bottom: 15px;
+}
+
+.new-buttons {
+	border-style: none;
+    background-color: #401072;
+    border-radius: 4px;
+    color: #ffffff;
+    font-weight: 700;
+    padding: 6px;
+	width: 100px;
+}
+
 .name-input {
 	display: flex;
 	justify-content: center;
@@ -152,7 +179,7 @@ label {
 	display: flex;
 	flex-direction: column;
 	padding-bottom: 3rem;
-	padding-top: 6rem;
+	padding-top: 3rem;
 }
 
 .bold {

@@ -209,6 +209,14 @@ const gameBoardModule = (() => {
     displayNames();
     highlightSymbol();
     boardClickEvents();
+
+    if (displayController.gameInitialized !== true) {
+      const newRoundButton = document.querySelector('.new-round-btn');
+      newRoundButton.addEventListener('click', () => {
+        newRoundReset();
+      });
+    }
+
     displayController.gameInitialized = true;
 
     const winningReset = (player) => {
@@ -221,6 +229,19 @@ const gameBoardModule = (() => {
       winnerMessage.textContent = gameWinner;
       console.log(gameWinner);
       turnCount = 0;
+      boardArrayReset();
+      // displayController.gameBoardCont.replaceChildren();
+      // displayController.playersCont.replaceChildren();
+    };
+
+    const newRoundReset = () => {
+      displayController.gameBoardCont.replaceChildren();
+      displayController.playersCont.replaceChildren();
+      displayController.playersCont.style.display = 'flex';
+      const winnerContainer = document.querySelector('.winner-cont');
+      winnerContainer.style.display = 'none';
+      turnCount = 0;
+      playRound(firstPlayer, secondPlayer);
       // boardArrayReset();
       // displayController.gameBoardCont.replaceChildren();
       // displayController.playersCont.replaceChildren();
@@ -308,6 +329,11 @@ const gameBoardModule = (() => {
         displayController.gameBoardArray[6].style.backgroundColor = '#6028ba';
         winningReset(secondPlayer.name);
       }
+    };
+    return {
+      firstPlayer,
+      secondPlayer,
+      newRoundReset,
     };
   };
 

@@ -10,7 +10,6 @@ nameInputForm.addEventListener('submit', (e) => {
   e.preventDefault();
   nameInputForm.style.display = 'none';
   gameBoardModule.playRound(playerFactory(player1name.value, 'X'), playerFactory(player2name.value, 'O'));
-  // nameInputForm.reset();
 });
 
 const playerFactory = (name, symbol) => {
@@ -142,11 +141,16 @@ const gameBoardModule = (() => {
   const gameFlow = () => {
     turnCount += 1;
     if (turnCount === 9) {
-      console.log('The game is tied');
+      displayController.playersCont.style.display = 'none';
+      const winnerContainer = document.querySelector('.winner-cont');
+      winnerContainer.style.display = 'flex';
+      const winnerMessage = document.querySelector('.game-winner-placeholder');
+      let gameWinner = '';
+      gameWinner = 'The game is tied!';
+      winnerMessage.textContent = gameWinner;
       turnCount = 0;
       boardArrayReset();
-      displayController.gameBoardCont.replaceChildren();
-      displayController.playersCont.replaceChildren();
+      console.log('The game is tied');
     }
   };
 
@@ -204,20 +208,26 @@ const gameBoardModule = (() => {
       });
     };
 
-    displayController.createSquares();
-    displayController.createPlayerBoard();
-    displayNames();
-    highlightSymbol();
-    boardClickEvents();
+    const playRoundLogic = () => {
+      displayController.createSquares();
+      displayController.createPlayerBoard();
+      displayNames();
+      highlightSymbol();
+      boardClickEvents();
+      if (displayController.gameInitialized !== true) {
+        const newRoundButton = document.querySelector('.new-round-btn');
+        newRoundButton.addEventListener('click', () => {
+          newRoundReset();
+        });
+        const newPlayersButton = document.querySelector('.new-players-btn');
+        newPlayersButton.addEventListener('click', () => {
+          newPlayersReset();
+        });
+      }
+      displayController.gameInitialized = true;
+    };
 
-    if (displayController.gameInitialized !== true) {
-      const newRoundButton = document.querySelector('.new-round-btn');
-      newRoundButton.addEventListener('click', () => {
-        newRoundReset();
-      });
-    }
-
-    displayController.gameInitialized = true;
+    playRoundLogic();
 
     const winningReset = (player) => {
       displayController.playersCont.style.display = 'none';
@@ -230,8 +240,8 @@ const gameBoardModule = (() => {
       console.log(gameWinner);
       turnCount = 0;
       boardArrayReset();
-      // displayController.gameBoardCont.replaceChildren();
-      // displayController.playersCont.replaceChildren();
+      const gameBoard = document.querySelector('.gameboard');
+      gameBoard.classList.add('disabledbutton');
     };
 
     const newRoundReset = () => {
@@ -242,9 +252,16 @@ const gameBoardModule = (() => {
       winnerContainer.style.display = 'none';
       turnCount = 0;
       playRound(firstPlayer, secondPlayer);
-      // boardArrayReset();
-      // displayController.gameBoardCont.replaceChildren();
-      // displayController.playersCont.replaceChildren();
+    };
+
+    const newPlayersReset = () => {
+      displayController.gameBoardCont.replaceChildren();
+      displayController.playersCont.replaceChildren();
+      displayController.playersCont.style.display = 'flex';
+      const winnerContainer = document.querySelector('.winner-cont');
+      winnerContainer.style.display = 'none';
+      nameInputForm.style.display = 'block';
+      nameInputForm.reset();
     };
 
     const winningCondition = () => {
